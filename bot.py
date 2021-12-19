@@ -16,4 +16,20 @@ async def meow(ctx):
     vc = await channel.connect()
     vc.play(discord.FFmpegPCMAudio('meow.mp3'), after=lambda e: print('done', e))
 
+@client.event
+async def on_ready():
+    print('We have logged in as {0.user}'.format(client))
+    
+@client.command
+async def startbet():
+	global myList
+	myList = []
+	title = text[8:]
+	message.channel.send(title)
+
+@client.command
+async def close():
+	message.channel.send('Closing')
+    client.close()
+
 client.run(TOKEN)
