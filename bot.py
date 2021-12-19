@@ -26,21 +26,11 @@ async def meow(ctx):
     vc = await channel.connect()
     vc.play(discord.FFmpegPCMAudio('meow.mp3'), after=lambda e: print('done', e))
     
-<<<<<<< HEAD
 @client.command() 
 async def startbet(ctx, *, nameofbet):
     emojis = ['👍','👎']
     msg = await ctx.send(nameofbet)
     for emoji in emojis:
         await msg.add_reaction(emoji)
-=======
-@client.command
-async def startbet():
-	global myList
-	myList = []
-	title = text[8:]
-	message.channel.send(title)
-
->>>>>>> 72ffeb566e1f1763b4d6cf751d89cd0ffda7fb24
 
 client.run(TOKEN)
