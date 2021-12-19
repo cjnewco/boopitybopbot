@@ -33,4 +33,14 @@ async def startbet(ctx, *, nameofbet):
     for emoji in emojis:
         await msg.add_reaction(emoji)
 
+@client.command()
+async def play( ctx, *, arg ):
+    if arg.startswith("http"):
+        url = arg
+        await ctx.send(arg)
+    else:
+        #search for the video on youtube
+        print("lol you fucked up")
+
+
 client.run(TOKEN)
