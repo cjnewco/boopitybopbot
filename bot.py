@@ -10,9 +10,11 @@ client = commands.Bot(command_prefix = '$')
 TOKEN = "ODE2ODk5OTQ1MjEzODUzNzU2.YEBrXA.l6cSmHJYrzaLM5TQCUJCWt1hDrQ"
 
 @client.command()
-async def join(ctx):
+async def meow(ctx):
     author = ctx.message.author
     channel = author.voice.channel
-    await channel.connect()
+    vc = await channel.connect()
+    vc.play(discord.FFmpegPCMAudio('./meow.mp3'), after=lambda e: print('done', e))
+    
 
 client.run(TOKEN)
