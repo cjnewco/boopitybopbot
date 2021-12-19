@@ -1,0 +1,2 @@
+# boopitybopbot
+funny discord bot
