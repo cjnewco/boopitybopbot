@@ -27,7 +27,7 @@ async def meow(ctx):
     vc.play(discord.FFmpegPCMAudio('meow.mp3'), after=lambda e: print('done', e))
     
 @client.command() 
-async def startbet(ctx, *, nameofbet):
+async def startgamba(ctx, *, nameofbet):
     emojis = ['👍','👎']
     msg = await ctx.send(nameofbet)
     for emoji in emojis:
@@ -41,6 +41,11 @@ async def play( ctx, *, arg ):
     else:
         #search for the video on youtube
         print("lol you fucked up")
+
+@client.command()
+async def startbet(ctx, *, nameofbet):
+    msg = await ctx.send(nameofbet)
+    
 
 
 client.run(TOKEN)
