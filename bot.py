@@ -14,7 +14,6 @@ async def meow(ctx):
     author = ctx.message.author
     channel = author.voice.channel
     vc = await channel.connect()
-    vc.play(discord.FFmpegPCMAudio('./meow.mp3'), after=lambda e: print('done', e))
-    
+    vc.play(discord.FFmpegPCMAudio('meow.mp3'), after=lambda e: print('done', e))
 
 client.run(TOKEN)
