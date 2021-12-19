@@ -27,9 +27,5 @@ async def startbet():
 	title = text[8:]
 	message.channel.send(title)
 
-@client.command
-async def close():
-	message.channel.send('Closing')
-    client.close()
 
 client.run(TOKEN)
