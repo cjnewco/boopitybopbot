@@ -104,7 +104,7 @@ async def play( ctx, *, arg ):
     else: 
         if arg.startswith("http"):
             url = arg 
-            player = await YTDLSource.from_url(url)
+            player = await YTDLSource.from_url(url, stream=True)
             vc.play(player, after=lambda e: print(f'Player error: {e}') if e else None)
         else:
             #search for the video on youtube
