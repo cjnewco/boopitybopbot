@@ -1,14 +1,16 @@
 import os
+import re
 import discord
 import asyncio
 import youtube_dl
+import urllib.request
+import urllib.parse
 from dotenv import load_dotenv
 from discord.ext import commands
 from discord.ext.commands import Bot
 from discord.voice_client import VoiceClient
 
 load_dotenv('.env')
-print(os.getenv('DISCORD_TOKEN'))
 
 #intents = discord.Intents.default()
 #intents.members = True
@@ -117,11 +119,18 @@ async def play( ctx, *, arg ):
     else: 
         if arg.startswith("http"):
             url = arg 
-            player = await YTDLSource.from_url(url, stream=True)
-            vc.play(player, after=lambda e: print(f'Player error: {e}') if e else None)
         else:
             #search for the video on youtube
-            print(arg)
+            query_string = urllib.parse.urlencode({"search_query" : arg})
+            html = urllib.request.urlopen("http://www.youtube.com/results?" + query_string)
+            video_ids = re.findall(r"watch\?v=(\S{11})", html.read().decode())
+            url = video_ids[0]
+        
+        player = await YTDLSource.from_url(url, stream=True)
+        vc.play(player, after=lambda e: print(f'Player error: {e}') if e else None)
 
+@client.command()
+async def stop(ctx):
+    await ctx.voice_client.disconnect()
 
-client.run('' + os.getenv('DISCORD_TOKEN'))
+client.run(os.getenv('DISCORD_TOKEN'))
