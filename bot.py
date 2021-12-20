@@ -2,16 +2,17 @@ import os
 import discord
 import asyncio
 import youtube_dl
+from dotenv import load_dotenv
 from discord.ext import commands
 from discord.ext.commands import Bot
 from discord.voice_client import VoiceClient
 
+load_dotenv('.env')
+print(os.getenv('DISCORD_TOKEN'))
+
 #intents = discord.Intents.default()
 #intents.members = True
 client = commands.Bot(command_prefix = '$') #add intents=intents when ready
-
-# find a way to make it so that this doesnt need to be in the repo lol
-TOKEN = "ODE2ODk5OTQ1MjEzODUzNzU2.YEBrXA.l6cSmHJYrzaLM5TQCUJCWt1hDrQ"
 
 youtube_dl.utils.bug_reports_message = lambda: ''
 
@@ -123,4 +124,4 @@ async def play( ctx, *, arg ):
             print(arg)
 
 
-client.run(TOKEN)
+client.run('' + os.getenv('DISCORD_TOKEN'))
