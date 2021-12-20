@@ -20,10 +20,19 @@ async def on_ready():
         print(member)
 
 @client.command()
-async def meow(ctx):
+async def join(ctx):
     author = ctx.message.author
     channel = author.voice.channel
-    vc = await channel.connect()
+    if channel is not None:
+        await ctx.connect(channel)
+    else:
+        cxt.send("you have to be in a voice channel for me to join")
+
+@client.command()
+async def meow(ctx):
+    if ctx.voice_client is None:
+        await join(ctx)
+    vc = ctx.voice_client
     vc.play(discord.FFmpegPCMAudio('meow.mp3'), after=lambda e: print('done', e))
     
 @client.command() 
@@ -34,18 +43,16 @@ async def startgamba(ctx, *, nameofbet):
         await msg.add_reaction(emoji)
 
 @client.command()
-async def play( ctx, *, arg ):
-    if arg.startswith("http"):
-        url = arg
-        await ctx.send(arg)
-    else:
-        #search for the video on youtube
-        print("lol you fucked up")
-
-@client.command()
 async def startbet(ctx, *, nameofbet):
     msg = await ctx.send(nameofbet)
     
-
+@client.command()
+async def play( ctx, *, arg ):
+    if arg.startswith("http"):
+        url = arg
+        
+    else:
+        #search for the video on youtube
+        print(arg)
 
 client.run(TOKEN)
