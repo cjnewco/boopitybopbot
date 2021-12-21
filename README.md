@@ -4,7 +4,7 @@
 
 The required python dependencies can be installed with  
 
-> $ `pip install asyncio discord.py[voice] python-dotenv youtube-dl`  
+> $ pip install asyncio discord.py[voice] python-dotenv youtube-dl  
 
 for any voice related commands, ffmpeg must also be installed and added to PATH  
 
