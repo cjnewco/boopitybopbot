@@ -5,6 +5,8 @@ import asyncio
 import youtube_dl
 import urllib.request
 import urllib.parse
+import random
+import csv
 from dotenv import load_dotenv
 from discord.ext import commands
 from discord.ext.commands import Bot
@@ -12,9 +14,10 @@ from discord.voice_client import VoiceClient
 
 load_dotenv('.env')
 
-#intents = discord.Intents.default()
-#intents.members = True
-client = commands.Bot(command_prefix = '$') #add intents=intents when ready
+intents = discord.Intents.default()
+intents.members = True
+
+client = commands.Bot(command_prefix = '$', intents=intents)
 
 youtube_dl.utils.bug_reports_message = lambda: ''
 
@@ -64,10 +67,26 @@ class YTDLSource(discord.PCMVolumeTransformer):
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
-    #update server list in csv here
-    #guild = await client.get_guild('Volskaya Industries')
-    #for member in guild.members:
-    #    print(member)
+    memberList = client.get_guild(842188551646347264).members
+    addList = list()
+    fileList = list()
+    with open('memberpoints.csv', mode = 'r') as file:
+        fReader = csv.reader(file)
+        for row in fReader:
+            fileList.append(row[0])
+        for member in memberList:
+            w = 0
+            for fileMembers in fileList:
+                if (member.name == fileMembers) :
+                    w = 1
+            if (w == 0) :
+                addList.append(member)
+            w = 0
+    with open('memberpoints.csv', mode  = 'a', newline = '') as file:
+        fWriter = csv.writer(file)
+        for i in addList:
+            row = [i.name,0]
+            fWriter.writerow(row)
 
 @client.command()
 async def join(ctx):
@@ -86,11 +105,30 @@ async def meow(ctx):
     vc.play(discord.FFmpegPCMAudio('meow.mp3'), after=lambda e: print('done', e))
     
 @client.command() 
-async def startgamba(ctx, *, nameofgamba):
+async def coinflip(ctx):
+    a = random.random()
     emojis = ['👍','👎']
-    msg = await ctx.send(nameofbet)
+    msg = await ctx.send('Coin Flip!')
     for emoji in emojis:
         await msg.add_reaction(emoji)
+    def check(reaction, user):
+        if str(reaction.emoji) == '👍' : 
+            return user == ctx.author and str(reaction.emoji) == '👍'
+        if str(reaction.emoji) == '👎' :
+            return user == ctx.author and str(reaction.emoji) == '👎'
+    
+    try:
+        reaction, user = await client.wait_for('reaction_add', timeout=30.0, check=check)
+    except asyncio.TimeoutError:
+        if emojis[int((a*10) % 2)] == '👎':
+            await ctx.send('nice')
+        else:
+            await ctx.send('not nice')
+    else:
+        if emojis[int((a*10) % 2)] == '👍':
+            await ctx.send('nice')
+        else:
+            await ctx.send('not nice')
 
 @client.command()
 async def startbet(ctx, *, nameofbet):
